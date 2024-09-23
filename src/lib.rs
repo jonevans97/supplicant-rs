@@ -273,6 +273,10 @@ impl<'a> Bss<'a> {
         self.proxy.frequency().await.map_err(From::from)
     }
 
+    pub async fn ies(&self) -> Result<Vec<u8>> {
+        self.proxy.ies().await.map_err(From::from)
+    }
+
     pub async fn ssid(&self) -> Result<Vec<u8>> {
         self.proxy.ssid().await.map_err(From::from)
     }
