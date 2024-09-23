@@ -220,6 +220,16 @@ impl<'a> Interface<'a> {
     }
 
     #[tracing::instrument]
+    pub async fn receive_bssadded(&self) -> impl futures_util::Stream<Item = Result<bool>> + 'a {
+        // TODO: no unwrap
+        let bssadded_stream = self.proxy.receive_bssadded().await.unwrap();
+        bssadded_stream.then(|signal| async move {
+            tracing::trace!("signal: {:?}", &signal);
+            Ok(signal.args()?.success)
+        })
+    }
+
+    #[tracing::instrument]
     pub async fn disconnect_reason(&self) -> Result<Reason> {
         Ok(self.proxy.disconnect_reason().await?.into())
     }
